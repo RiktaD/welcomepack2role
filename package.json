@@ -1,0 +1,71 @@
+{
+  "author": "Dennis S. R. Richter <richter@vivaldi.net>",
+  "bugs": {
+    "url": "https://github.com/RiktaD/welcomepack2role/issues"
+  },
+  "dependencies": {
+    "discord.js": "^13.6.0"
+  },
+  "description": "Assigns roles to users that have gotten their WhalleyBot-WelcomePack",
+  "devDependencies": {
+    "@commitlint/cli": "^16.1.0",
+    "@commitlint/config-conventional": "^16.0.0",
+    "@discordjs/builders": "^0.12.0",
+    "@discordjs/rest": "^0.3.0",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/noop": "github:semantic-release/git",
+    "@typescript-eslint/eslint-plugin": "^5.11.0",
+    "@typescript-eslint/parser": "^5.11.0",
+    "discord-api-types": "^0.26.1",
+    "discord.js": "^13.6.0",
+    "dotenv": "^16.0.0",
+    "eslint": "^8.8.0",
+    "husky": "^7.0.4",
+    "pkg": "^5.5.2",
+    "semantic-release": "^19.0.2",
+    "typescript": "^4.5.5"
+  },
+  "homepage": "https://github.com/RiktaD/welcomepack2role",
+  "keywords": [
+    "SCUM",
+    "Discord",
+    "Bot",
+    "WhalleyBot"
+  ],
+  "license": "MIT",
+  "main": "dist/bot.js",
+  "name": "welcomepack2role",
+  "private": true,
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      [
+        "@semantic-release/github",
+        {
+          "assets": "release/*"
+        }
+      ],
+      "@semantic-release/git"
+    ],
+    "branches": [
+      "main"
+    ],
+    "preset": "angular"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:RiktaD/welcomepack2role.git"
+  },
+  "scripts": {
+    "lint": "eslint . --ext .ts",
+    "prepare": "husky install",
+    "release": "semantic-release",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "compile": "tsc && pkg dist/exeIndex.js --out-path release -C Brotli && mv release/exeIndex-linux release/welcomepack2role-linux && mv release/exeIndex-macos release/welcomepack2role-macos && mv release/exeIndex-win.exe release/welcomepack2role-win.exe"
+  },
+  "version": "0.0.1"
+}

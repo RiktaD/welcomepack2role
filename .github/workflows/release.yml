@@ -1,0 +1,30 @@
+name: Release to Production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create_github_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile Binaries
+        run: npm run compile
+
+      - name: Zip Node
+        run: zip release/welcomepack2role-node.zip dist/* package*json *.md LICENSE Dockerfile .env.example
+
+      - name: Release
+        run: npm run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}

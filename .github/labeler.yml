@@ -1,0 +1,39 @@
+composer.json:
+  - ./composer.json
+
+.github:
+  - .github/*
+  - .github/**/*
+
+.gitignore:
+  - .gitignore
+
+config (tooling):
+  - ./*.dist
+  - .github/*.yml
+
+tests:
+  - tests/*
+
+code change:
+  - src/*
+  - src/**/*
+
+changelog:
+  - ./CHANGELOG.md
+
+documentation:
+  - docs/
+  - README.md
+
+javascript:
+  - ./*.js
+  - ./**/*.js
+
+typescript:
+  - ./*.ts
+  - ./**/*.ts
+
+shell:
+  - ./*.sh
+  - ./**/*.sh

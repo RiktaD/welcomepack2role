@@ -1,0 +1,7 @@
+#!/bin/sh
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2022 Dennis S. Richard Richter <richter@vivaldi.net>
+
+. "$(dirname "$0")/_/husky.sh"
+
+npx --no -- commitlint --edit ""
