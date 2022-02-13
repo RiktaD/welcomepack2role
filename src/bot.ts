@@ -36,21 +36,26 @@ export class Bot {
 		});
 
 		this.client.on('messageCreate', async message => {
+			try {
+				if (message.channelId !== this.config.channel // not log-channel
+					|| !message.content.includes('PURCHASE RECEIPT') // not a purchase receipt
+					|| !message.content.includes('PackName: WelcomePack') // not a welcome pack
+					|| !message.content.includes('Status: COMPLETED') // not completed yet
+				) return;
 
-			if (message.channelId !== this.config.channel // not log-channel
-				|| !message.content.includes('PURCHASE RECEIPT') // not a purchase receipt
-				|| !message.content.includes('PackName: WelcomePack') // not a welcome pack
-				|| !message.content.includes('Status: COMPLETED') // not completed yet
-			) return;
+				const discordId = message.content.match(/DiscordID:\s(\d+)/)[1];
+				const target = message.guild.members.cache.find(member => {
+					return member.id === discordId
+				})
 
-			const discordId = message.content.match(/DiscordID:\s(\d+)/)[1];
-			const target = message.guild.members.cache.find(member => {
-				return member.id === discordId
-			})
-
-			target.roles.add(this.role).then(() => {
-				message.react('☑️');
-			});
+				target.roles.add(this.role).then(() => {
+					message.react('☑️');
+				});
+			} catch (e) {
+				message.react('🚨');
+				message.reply(e.message);
+				console.error(e.message);
+			}
 		});
 
 		this.client.login(this.config.token);
