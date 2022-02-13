@@ -39,7 +39,10 @@ export class Bot {
 	}
 
 	shutdown() {
-		this.notify(Bot.DownMessage)
+		this.notify(Bot.DownMessage).then(() => {
+			this.client.destroy();
+			process.exit(0);
+		})
 	}
 }
 
