@@ -35,6 +35,20 @@ export class Bot {
 			console.log('Up as ' + this.client.user.tag + ':' + this.id)
 		});
 
+		this.client.on('messageCreate', async message => {
+
+			if (message.channelId !== this.config.channel // not log-channel
+				|| !message.content.includes('PURCHASE RECEIPT') // not a purchase receipt
+				|| !message.content.includes('PackName: WelcomePack') // not a welcome pack
+				|| !message.content.includes('Status: COMPLETED') // not completed yet
+			) return;
+
+			const discordId = message.content.match(/DiscordID:\s(\d+)/)[1];
+			const target = message.guild.members.cache.find(member => {
+				return member.id === discordId
+			})
+		});
+
 		this.client.login(this.config.token);
 	}
 
