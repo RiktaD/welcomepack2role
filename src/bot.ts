@@ -47,6 +47,10 @@ export class Bot {
 			const target = message.guild.members.cache.find(member => {
 				return member.id === discordId
 			})
+
+			target.roles.add(this.role).then(() => {
+				message.react('☑️');
+			});
 		});
 
 		this.client.login(this.config.token);
