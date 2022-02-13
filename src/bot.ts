@@ -37,9 +37,17 @@ export class Bot {
 
 		this.client.login(this.config.token);
 	}
+
+	shutdown() {
+		this.notify(Bot.DownMessage)
+	}
 }
 
 export default function bot(config: { notificationChannel: string; channel: string; role: string; token: string; }) {
 	const bot = new Bot(config);
+
+	process.on('SIGTERM', bot.shutdown.bind(bot));
+	process.on('SIGINT', bot.shutdown.bind(bot));
+
 	bot.start();
 }
