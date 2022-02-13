@@ -10,6 +10,7 @@ export class Bot {
 	static DownMessage = 'Looks like its time to go now!'
 
 	id: string;
+	prefix: string;
 	notificationChannel: TextChannel = null;
 	role: Role
 
@@ -21,15 +22,32 @@ export class Bot {
 	) {
 	}
 
+	handleMessageOfMyself(message: Message) {
+		if (message.content.includes(this.id)) {
+			return; // it's me, and even my own instance!
+		} // or it's another instance of myself, shall we talk to it?
+
+		if (message.content.includes(Bot.UpMessage)) {
+			message.reply(this.prefix + 'I am here as well. Are you here to replace me?')
+			return;
+		}
+
+		if (message.content.includes(Bot.DownMessage)) {
+			message.reply(this.prefix + 'Don\'t worry other me, I\'ve got this!')
+			return;
+		}
+	}
+
 	notify(message: string): null | Promise<Message> {
 		console.log(message)
-		return this.notificationChannel.send('<' + this.id + '> ' + message)
+		return this.notificationChannel.send(this.prefix + message)
 	}
 
 	start() {
 		this.client.once('ready', async () => {
 			this.notificationChannel = this.client.guilds.cache.first().channels.cache.find(channel => channel.id === this.config.notificationChannel) as TextChannel
 			this.id = this.client.readyTimestamp.toString().slice(-4);
+			this.prefix = '<' + this.id + '> ';
 			this.role = this.client.guilds.cache.first().roles.cache.find(role => role.id === this.config.role);
 			this.notify(Bot.UpMessage)
 			console.log('Up as ' + this.client.user.tag + ':' + this.id)
@@ -37,6 +55,11 @@ export class Bot {
 
 		this.client.on('messageCreate', async message => {
 			try {
+				if (message.member.user.tag === this.client.user.tag) {
+					this.handleMessageOfMyself(message);
+					return;
+				}
+
 				if (message.channelId !== this.config.channel // not log-channel
 					|| !message.content.includes('PURCHASE RECEIPT') // not a purchase receipt
 					|| !message.content.includes('PackName: WelcomePack') // not a welcome pack
